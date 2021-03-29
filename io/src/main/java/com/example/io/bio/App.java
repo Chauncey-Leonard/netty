@@ -1,4 +1,4 @@
-package com.example.bio.core.server;
+package com.example.io.bio;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,7 +13,7 @@ import java.util.concurrent.Executors;
  * @author Chauncey
  * @since 1.0.0
  */
-public class BIOServer {
+public class App {
 
     public static void main(String[] args) {
 
@@ -27,8 +27,8 @@ public class BIOServer {
 
         ExecutorService executorService = Executors.newCachedThreadPool();
 
-        // 创建 ServerSocket
         try {
+            // 创建 ServerSocket
             ServerSocket serverSocket = new ServerSocket(6666);
             System.out.println("server is running at port 6666");
 
