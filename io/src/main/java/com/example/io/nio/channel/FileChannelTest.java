@@ -20,10 +20,8 @@ public class FileChannelTest {
         try {
             // 创建一个输出流
             fos = new FileOutputStream("E:\\test.txt");
-
             // 通过 FileOutputStream 获取对应的 FileChannel
             FileChannel channel = fos.getChannel();
-
             // 创建一个缓冲区
             ByteBuffer allocate = ByteBuffer.allocate(1024);
             // 将message放入缓冲区
@@ -37,6 +35,7 @@ public class FileChannelTest {
         } finally {
             try {
                 if (fos != null) {
+                    // 关闭流
                     fos.close();
                 }
             } catch (IOException e) {
