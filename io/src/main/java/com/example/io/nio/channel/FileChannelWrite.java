@@ -12,7 +12,7 @@ import java.nio.charset.StandardCharsets;
  * @author Chauncey
  * @since 1.0.0
  */
-public class FileChannelTest {
+public class FileChannelWrite {
 
     public static void main(String[] args) {
         String message = "Chauncey Leonard";
