@@ -18,7 +18,7 @@ public class FileChannelRead {
         FileInputStream fis = null;
         try {
             // 创建文件输入流
-            File file = new File("E:\\test.txt");
+            File file = new File("test.txt");
             fis = new FileInputStream(file);
 
             // 获取通道

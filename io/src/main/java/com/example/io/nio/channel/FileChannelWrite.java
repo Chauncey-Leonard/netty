@@ -19,7 +19,7 @@ public class FileChannelWrite {
         FileOutputStream fos = null;
         try {
             // 创建一个输出流
-            fos = new FileOutputStream("E:\\test.txt");
+            fos = new FileOutputStream("test.txt");
             // 通过 FileOutputStream 获取对应的 FileChannel
             FileChannel channel = fos.getChannel();
             // 创建一个缓冲区
