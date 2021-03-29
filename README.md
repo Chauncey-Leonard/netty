@@ -1,6 +1,6 @@
 # Netty
 
-本项目创建的目的是为了学习`netty`框架的使用及源码分析
+本项目创建的目的是为了学习`netty`框架的使用及源码分析，[详细文档](https://gitee.com/Chauncey-Leonard/netty/blob/master/docs/netty.md)
 
 ### 一、Netty的介绍
 
