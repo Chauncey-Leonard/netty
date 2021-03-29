@@ -38,9 +38,7 @@ public class BIOServer {
                 System.out.println("连接到一个客户端");
 
                 // 创建线程，与之通讯
-                executorService.execute(() -> {
-                    handler(accept);
-                });
+                executorService.execute(() -> handler(accept));
             }
         } catch (IOException e) {
             e.printStackTrace();
