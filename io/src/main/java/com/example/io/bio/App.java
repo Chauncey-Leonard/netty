@@ -8,7 +8,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * 同步阻塞服务端
+ * BIO：同步阻塞
  *
  * @author Chauncey
  * @since 1.0.0
