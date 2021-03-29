@@ -62,12 +62,12 @@ public class BIOServer {
             while (true) {
                 int read = inputStream.read(bytes);
 
-                if (read == -1) {
+                if (read != -1) {
+                    // 打印客户端发送的数据
+                    System.out.println(new String(bytes, 0, read));
+                } else {
                     break;
                 }
-
-                // 打印客户端发送的数据
-                System.out.println(new String(bytes, 0, read));
             }
         } catch (IOException e) {
             e.printStackTrace();
