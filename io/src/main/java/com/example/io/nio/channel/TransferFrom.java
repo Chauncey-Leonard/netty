@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.nio.channels.FileChannel;
 
 /**
- * 文件拷贝
+ * 应用实例4：使用transferFrom实现文件拷贝
  *
  * @author Chauncey
  * @since 1.0.0
