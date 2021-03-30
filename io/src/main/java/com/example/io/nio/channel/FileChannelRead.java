@@ -7,7 +7,9 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
 /**
- * 本地文件数据读取
+ * 应用实例2：本地文件读数据
+ * 实例要求：
+ * - 使用ByteBuffer和FileChannel，将test.txt中的数据读取到程序并在控制台打印
  *
  * @author Chauncey
  * @since 1.0.0
