@@ -7,7 +7,10 @@ import java.nio.channels.FileChannel;
 import java.nio.charset.StandardCharsets;
 
 /**
- * 使用FileChannel向文件中写入内容
+ * 应用实例1：本地文件写数据
+ * 实例要求：
+ * - 使用ByteBuffer和FileChannel，将字符串写入到test.txt文件中
+ * - 文件不存在就创建
  *
  * @author Chauncey
  * @since 1.0.0
