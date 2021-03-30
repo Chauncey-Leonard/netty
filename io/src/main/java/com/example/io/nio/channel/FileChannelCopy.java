@@ -7,7 +7,9 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
 /**
- * 数据拷贝
+ * 应用实例3：使用一个Buffer完成文件的读取、写入
+ * 实例要求：
+ * - 使用FileChannel和方法read、write完成文件的拷贝
  *
  * @author Chauncey
  * @since 1.0.0
