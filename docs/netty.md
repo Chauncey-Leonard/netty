@@ -91,3 +91,4 @@
 #### 4. Buffer和Channel的注意事项
 
 - `ByteBuffer`支持类型化的`put`和`get`,`put`放入的是什么数据类型,`get`就应该使用响应的数据类型来取出,否则可能会报`BufferUnderFlowException`异常
+- 可以将一个普通`Buffer`转成只读`Buffer`
