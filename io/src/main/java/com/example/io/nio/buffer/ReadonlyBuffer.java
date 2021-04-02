@@ -25,6 +25,9 @@ public class ReadonlyBuffer {
         while (readOnlyBuffer.hasRemaining()) {
             System.out.println("readOnlyBuffer.get() = " + readOnlyBuffer.get());
         }
+
+        // ReadOnlyBufferException
+        // readOnlyBuffer.put((byte) 100);
     }
 
 }
