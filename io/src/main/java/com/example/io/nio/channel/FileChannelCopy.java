@@ -17,13 +17,9 @@ import java.nio.channels.FileChannel;
 public class FileChannelCopy {
 
     public static void main(String[] args) {
-        FileInputStream fis = null;
-        FileOutputStream fos = null;
-        try {
-            // 创建文件输入输出流
-            fis = new FileInputStream("test.txt");
-            fos = new FileOutputStream("test-copy.txt");
 
+        try (FileInputStream fis = new FileInputStream("test.txt");
+             FileOutputStream fos = new FileOutputStream("test-copy.txt")) {
             // 获取对应的输入输出通道
             FileChannel fisChannel = fis.getChannel();
             FileChannel fosChannel = fos.getChannel();
@@ -48,19 +44,6 @@ public class FileChannelCopy {
 
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            // 关闭相关流
-            try {
-                if (fis != null) {
-                    fis.close();
-                }
-
-                if (fos != null) {
-                    fos.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 

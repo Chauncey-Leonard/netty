@@ -17,15 +17,10 @@ import java.nio.channels.FileChannel;
 public class FileChannelRead {
 
     public static void main(String[] args) {
-        FileInputStream fis = null;
-        try {
-            // 创建文件输入流
-            File file = new File("test.txt");
-            fis = new FileInputStream(file);
-
+        File file = new File("test.txt");
+        try (FileInputStream fis = new FileInputStream(file)) {
             // 获取通道
             FileChannel channel = fis.getChannel();
-
             // 创建缓冲区
             ByteBuffer allocate = ByteBuffer.allocate((int) file.length());
 
@@ -36,14 +31,6 @@ public class FileChannelRead {
             System.out.println(new String(allocate.array()));
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                if (fis != null) {
-                    fis.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 
