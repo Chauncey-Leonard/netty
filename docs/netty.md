@@ -88,7 +88,24 @@
 - `DatagramChannel`：用于`UDP`的数据读写
 - `ServerSocketChannel`和`SocketChannel`：用于`TCP`的数据读写
 
-#### 4. Buffer和Channel的注意事项
+**Buffer和Channel的注意事项**
 
 - `ByteBuffer`支持类型化的`put`和`get`,`put`放入的是什么数据类型,`get`就应该使用响应的数据类型来取出,否则可能会报`BufferUnderFlowException`异常
 - 可以将一个普通`Buffer`转成只读`Buffer`
+
+**`FileChannel`**
+
+主要用来对本地文件进行IO操作的，常见的方法：
+
+- `read`：从通道读取数据并放到缓冲区中
+- `write`：把缓冲区中的数据写到通道中
+- `transferFrom`：从目标通道中复制数据到当前通道
+- `transferTo`：把数据从当前通道复制给目标通道
+
+#### 4. Selector
+
+- `Java`中的`NIO`,用非阻塞的`IO`方式,可以用一个线程,处理多个的客户端连接,就会使用到`Selector`
+- `Selector`能够监测多个注册的通道上是否有事件发生(注意:多个`Channel`以事件的方式可以注册到同一个`Selector`),如果有事件发生,便获取事件然后针对每个事件进行相应的处理,这样就可以只用一个单线程去管理多个通道,也就是管理多个连接和请求
+- 只有在连接真正有读写事件发生时,才会进行读写,就大大减少了系统的开销,并且不必为每个连接都创建一个线程,不用去维护多个线程
+- 避免了多线程之间的上下文切换导致的开销
+
