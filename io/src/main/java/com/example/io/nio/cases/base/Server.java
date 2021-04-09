@@ -1,4 +1,4 @@
-package com.example.io.nio;
+package com.example.io.nio.cases.base;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -13,7 +13,7 @@ import java.util.Set;
  * @author Chauncey
  * @since 1.0.0
  */
-public class NIOServer {
+public class Server {
 
     public static void main(String[] args) throws IOException {
         // 创建ServerSocketChannel

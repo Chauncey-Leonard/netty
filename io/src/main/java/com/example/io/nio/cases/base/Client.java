@@ -1,4 +1,4 @@
-package com.example.io.nio;
+package com.example.io.nio.cases.base;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -12,7 +12,7 @@ import java.nio.charset.StandardCharsets;
  * @author Chauncey
  * @since 1.0.0
  */
-public class NIOClient {
+public class Client {
 
     public static void main(String[] args) throws IOException {
         // 获取网络通道
