@@ -2,10 +2,9 @@ package com.example.io.nio.cases.chat;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.nio.channels.SelectionKey;
-import java.nio.channels.Selector;
-import java.nio.channels.ServerSocketChannel;
-import java.nio.channels.SocketChannel;
+import java.nio.ByteBuffer;
+import java.nio.channels.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 
 /**
@@ -48,6 +47,9 @@ public class ChatServer {
         }
     }
 
+    /**
+     * 监听客户端连接
+     */
     public void listen() {
         try {
             while (true) {
@@ -64,11 +66,12 @@ public class ChatServer {
                             // 将连接到的客户端注册到 Selector 中
                             sc.register(selector, SelectionKey.OP_READ);
                             // 提示
-                            System.out.println(sc.getRemoteAddress() + " 上线 ");
+                            System.out.println(sc.getRemoteAddress() + " 上线");
                         }
 
                         if (key.isReadable()) {
-                            // 处理读
+                            // 读取客户端信息
+                            readData(key);
                         }
 
                         // 删除当前的key，防止重复处理
@@ -83,8 +86,62 @@ public class ChatServer {
         }
     }
 
-    public void readData() {
+    /**
+     * 读取客户端信息
+     */
+    public void readData(SelectionKey key) {
+        // 获取关联的通道
+        SocketChannel sc = null;
 
+        try {
+            // 获取通道
+            sc = (SocketChannel) key.channel();
+            // 创建缓冲区
+            ByteBuffer buffer = ByteBuffer.allocate(1024);
+            int count = sc.read(buffer);
+
+            // 根据读取的字节数进行相应的处理
+            if (count > 0) {
+                // 将缓冲区的数据转换成字符串
+                String message = new String(buffer.array());
+                // 打印输出
+                System.out.println(sc.getRemoteAddress() + ": " + message);
+
+                // 向其他客户端转发消息
+                sendMessage(message, sc);
+            }
+        } catch (IOException e) {
+            try {
+                System.out.println(sc.getRemoteAddress() + " 离线了……");
+                // 取消注册
+                key.channel();
+                // 关闭通道
+                sc.close();
+            } catch (IOException e2) {
+                e2.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * 转发消息给其他客户端(通道)
+     *
+     * @param message 消息
+     * @param self    当前通道
+     */
+    private void sendMessage(String message, SocketChannel self) throws IOException {
+        System.out.println("消息转发中……");
+        // 遍历所有注册到多路复用器中的通道并排除当前通道
+        for (SelectionKey key : selector.keys()) {
+            Channel channel = key.channel();
+            if (channel instanceof SocketChannel && channel != self) {
+                SocketChannel dest = (SocketChannel) channel;
+                // 将消息写入缓冲区中
+                ByteBuffer buffer = ByteBuffer.wrap(message.getBytes(StandardCharsets.UTF_8));
+                // 将缓冲区中的数据写入通道
+                dest.write(buffer);
+            }
+        }
     }
 
     public static void main(String[] args) {
