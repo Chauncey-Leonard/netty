@@ -21,10 +21,13 @@ import java.util.Iterator;
  */
 public class ChatServer {
 
+    /** 多路复用器 */
     private Selector selector;
 
+    /** 服务端绑定的端口 */
     private static final int PORT = 8888;
 
+    /** 服务端的通道 */
     private ServerSocketChannel serverSocketChannel;
 
     /**
@@ -42,6 +45,8 @@ public class ChatServer {
             serverSocketChannel.configureBlocking(false);
             // 将通道注册到 Selector 中
             serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
+            // 监听客户端连接
+            listen();
         } catch (IOException e) {
             e.printStackTrace();
         }
