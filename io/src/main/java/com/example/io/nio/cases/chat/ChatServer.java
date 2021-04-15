@@ -45,8 +45,8 @@ public class ChatServer {
             serverSocketChannel.configureBlocking(false);
             // 将通道注册到 Selector 中
             serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
-            // 监听客户端连接
-            listen();
+
+            System.out.println("server started on port: " + PORT);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -58,7 +58,7 @@ public class ChatServer {
     public void listen() {
         try {
             while (true) {
-                int count = selector.select(2000);
+                int count = selector.select();
                 if (count > 0) {
                     // 获取SelectionKey集合
                     Iterator<SelectionKey> iterator = selector.selectedKeys().iterator();
@@ -68,10 +68,12 @@ public class ChatServer {
                         // 监听到accept
                         if (key.isAcceptable()) {
                             SocketChannel sc = serverSocketChannel.accept();
+                            // 设置通道为非阻塞
+                            sc.configureBlocking(false);
                             // 将连接到的客户端注册到 Selector 中
                             sc.register(selector, SelectionKey.OP_READ);
                             // 提示
-                            System.out.println(sc.getRemoteAddress() + " 上线");
+                            System.out.println(sc.getRemoteAddress().toString().substring(1) + " 上线");
                         }
 
                         if (key.isReadable()) {
@@ -110,14 +112,14 @@ public class ChatServer {
                 // 将缓冲区的数据转换成字符串
                 String message = new String(buffer.array());
                 // 打印输出
-                System.out.println(sc.getRemoteAddress() + ": " + message);
+                System.out.println(sc.getRemoteAddress().toString().substring(1) + ": " + message.trim());
 
                 // 向其他客户端转发消息
                 sendMessage(message, sc);
             }
         } catch (IOException e) {
             try {
-                System.out.println(sc.getRemoteAddress() + " 离线了……");
+                System.out.println(sc.getRemoteAddress().toString().substring(1) + " 离线了");
                 // 取消注册
                 key.channel();
                 // 关闭通道
@@ -150,7 +152,8 @@ public class ChatServer {
     }
 
     public static void main(String[] args) {
-
+        ChatServer server = new ChatServer();
+        server.listen();
     }
 
 }
