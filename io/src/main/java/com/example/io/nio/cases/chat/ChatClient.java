@@ -8,6 +8,7 @@ import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
+import java.util.Scanner;
 
 /**
  * 群聊系统客户端
@@ -39,9 +40,6 @@ public class ChatClient {
             socketChannel.register(selector, SelectionKey.OP_READ);
             username = socketChannel.getRemoteAddress().toString().substring(1);
             System.out.println(username + " is ok……");
-            
-            // 向服务器发送消息
-            sendMessage("Hello World!");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -53,8 +51,6 @@ public class ChatClient {
      * @param message 消息内容
      */
     private void sendMessage(String message) {
-        message = username + " : " + message;
-
         try {
             socketChannel.write(ByteBuffer.wrap(message.getBytes(StandardCharsets.UTF_8)));
         } catch (IOException e) {
@@ -69,7 +65,7 @@ public class ChatClient {
         try {
             int readChannels = selector.select();
             if (readChannels > 0) {
-                Iterator<SelectionKey> iterator = selector.keys().iterator();
+                Iterator<SelectionKey> iterator = selector.selectedKeys().iterator();
                 while (iterator.hasNext()) {
                     SelectionKey key = iterator.next();
                     if (key.isReadable()) {
@@ -77,6 +73,8 @@ public class ChatClient {
                         SocketChannel sc = (SocketChannel) key.channel();
                         // 获取缓冲区
                         ByteBuffer buffer = ByteBuffer.allocate(1024);
+                        // 将通道修改为非阻塞
+                        sc.configureBlocking(false);
                         // 读取数据
                         int read = sc.read(buffer);
                         if (read > 0) {
@@ -84,14 +82,40 @@ public class ChatClient {
                             System.out.println(s.trim());
                         }
                     }
+
+                    // 删除当前key，避免重复操作
+                    iterator.remove();
                 }
             } else {
-                System.out.println("没有可用的通道……");
+                // System.out.println("没有可用的通道……");
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    public static void main(String[] args) {
+        ChatClient client = new ChatClient();
+
+        /* 启动线程，每3秒从服务器读取数据 */
+        new Thread(() -> {
+            while (true) {
+                client.readMessage();
+
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
+        // 发送数据给服务器
+        Scanner scanner = new Scanner(System.in);
+        while (scanner.hasNextLine()) {
+            String s = scanner.nextLine();
+            client.sendMessage(s);
+        }
+    }
 
 }
